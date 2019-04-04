@@ -5,6 +5,6 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main jepsen.mnevis
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [jepsen "0.1.8"]
+                 [jepsen "0.1.13"]
                  [clj-http "3.9.0"]
                  [cheshire "5.8.0"]])

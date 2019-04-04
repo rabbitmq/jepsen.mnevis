@@ -59,6 +59,7 @@
     (setup! [_ test node]
       (info node "installing mnevis")
       (c/su
+        (c/exec :rm :-rf dir)
         (let [url "https://s3-eu-west-1.amazonaws.com/rabbitmq-share/mnevis_register_release-1.tar.gz"]
           (cu/install-archive! url dir))
         (c/cd dir
@@ -92,8 +93,7 @@
           :db   (db "nope")
           :client (Client. nil)
           :nemesis    (nemesis/partition-random-halves)
-          :model      (model/cas-register)
-          :checker    (checker/linearizable)
+          :checker    (checker/linearizable {:model (model/cas-register)})
           :generator (->> (gen/mix [r w cas])
                           (gen/stagger 1)
                           (gen/nemesis
@@ -101,7 +101,7 @@
                                              {:type :info, :f :start}
                                              (gen/sleep 5)
                                              {:type :info, :f :stop}])))
-                          (gen/time-limit 30))}))
+                          (gen/time-limit 300))}))
 
 (defn -main
   "Handles command line arguments. Can either run a test, or a web server for
